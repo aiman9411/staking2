@@ -9,6 +9,7 @@ contract ContractTest is Test {
     Staking public staking;
     MockToken public tokenOne;
     MockToken public tokenTwo;
+    uint256 public constant AMOUNT = 1e18;
 
     function setUp() public {
         tokenOne = new MockToken();
@@ -16,5 +17,9 @@ contract ContractTest is Test {
         staking = new Staking(address(tokenOne), address(tokenTwo));
     }
 
-    
+    function testStakingContract() public {
+        tokenOne.approve(address(staking), AMOUNT);
+        bool success = staking.stake(AMOUNT);
+        assertTrue(success);
+    }
 }

@@ -41,7 +41,7 @@ contract Staking is ReentrancyGuard {
         return ((s_balances[account] * (rewardPerToken() - s_userRewardPerTokenPaid[account])) / 1e18) + s_rewards[account];
     }
 
-    function stake(uint256 amount) external updateReward(msg.sender) nonReentrant moreThanZero(amount) {
+    function stake(uint256 amount) external updateReward(msg.sender) nonReentrant moreThanZero(amount) returns (bool) {
         s_totalSupply += amount;
         s_balances[msg.sender] += amount;
         emit Stake(msg.sender, amount);
@@ -49,6 +49,7 @@ contract Staking is ReentrancyGuard {
         if (!success) {
             revert TransferFailed();
         }
+        return success;
     }
 
     function withdraw(uint256 amount) external updateReward(msg.sender) nonReentrant moreThanZero(amount) {
