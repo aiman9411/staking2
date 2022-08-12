@@ -52,7 +52,7 @@ contract Staking is ReentrancyGuard {
         return success;
     }
 
-    function withdraw(uint256 amount) external updateReward(msg.sender) nonReentrant moreThanZero(amount) {
+    function withdraw(uint256 amount) external updateReward(msg.sender) nonReentrant moreThanZero(amount) returns (bool) {
         s_totalSupply -= amount;
         s_balances[msg.sender] -= amount;
         emit Unstake(msg.sender, amount);
@@ -60,9 +60,10 @@ contract Staking is ReentrancyGuard {
         if (!success) {
             revert TransferFailed();
         }
+        return success;
     }
 
-    function claimReward() external updateReward(msg.sender) nonReentrant {
+    function claimReward() external updateReward(msg.sender) nonReentrant returns (bool) {
         uint256 reward = s_rewards[msg.sender];
         s_rewards[msg.sender] = 0;
         emit RewardClaimed(msg.sender, reward);
@@ -70,6 +71,7 @@ contract Staking is ReentrancyGuard {
         if (!success) {
             revert TransferFailed();
         }
+        return success;
     }
 
     modifier updateReward(address account) {

@@ -17,9 +17,22 @@ contract ContractTest is Test {
         staking = new Staking(address(tokenOne), address(tokenTwo));
     }
 
-    function testStakingContract() public {
+    function testStakeFunction() public {
         tokenOne.approve(address(staking), AMOUNT);
         bool success = staking.stake(AMOUNT);
+        assertTrue(success);
+    }
+
+    function testWithdrawFunction() public {
+        tokenOne.approve(address(staking), AMOUNT);
+        staking.stake(AMOUNT);
+        bool success = staking.withdraw(AMOUNT);
+        assertTrue(success);
+    }
+
+    function testUpdateRewardFunction() public {
+        tokenTwo.approve(address(staking), AMOUNT);
+        bool success = staking.claimReward();
         assertTrue(success);
     }
 }
