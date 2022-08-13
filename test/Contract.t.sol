@@ -11,6 +11,8 @@ contract ContractTest is Test {
     MockToken public tokenTwo;
     uint256 public constant AMOUNT = 1e18;
 
+    event log(uint);
+
     function setUp() public {
         tokenOne = new MockToken();
         tokenTwo = new MockToken();
@@ -30,7 +32,7 @@ contract ContractTest is Test {
         assertTrue(success);
     }
 
-    function testUpdateRewardFunction() public {
+    function testClaimRewardFunction() public {
         tokenTwo.approve(address(staking), AMOUNT);
         bool success = staking.claimReward();
         assertTrue(success);
